@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "deleted",
+    "message_id": 586192,
+    "from_id": 6732237754,
+    "from_name": "Sinso Baki",
+    "from_username": "—",
+    "original_text": "уеу",
+    "new_text": "",
+    "happened_at": "2026-03-20 23:43:52 UTC"
+  },
+  {
+    "event_type": "edited",
+    "message_id": 586194,
+    "from_id": 6732237754,
+    "from_name": "Sinso Baki",
+    "from_username": "—",
+    "original_text": "ууау",
+    "new_text": "ууауцкцк",
+    "happened_at": "2026-03-20 23:43:56 UTC"
+  },
+  {
+    "event_type": "edited",
+    "message_id": 586194,
+    "from_id": 6732237754,
+    "from_name": "Sinso Baki",
+    "from_username": "—",
+    "original_text": "ууау",
+    "new_text": "Для двух пользователей на 30 дней NEWUSER30_2",
+    "happened_at": "2026-03-20 23:47:00 UTC"
+  }
+]

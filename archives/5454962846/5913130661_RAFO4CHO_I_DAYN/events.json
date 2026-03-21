@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "deleted",
+    "message_id": 586170,
+    "from_id": 5913130661,
+    "from_name": "RAFO4CHO_I_DAYN",
+    "from_username": "@faf_dayn",
+    "original_text": "впв",
+    "new_text": "",
+    "happened_at": "2026-03-20 23:40:47 UTC"
+  },
+  {
+    "event_type": "edited",
+    "message_id": 586169,
+    "from_id": 5913130661,
+    "from_name": "RAFO4CHO_I_DAYN",
+    "from_username": "@faf_dayn",
+    "original_text": "авав",
+    "new_text": "ававыаыаы",
+    "happened_at": "2026-03-20 23:40:54 UTC"
+  },
+  {
+    "event_type": "deleted",
+    "message_id": 586172,
+    "from_id": 5913130661,
+    "from_name": "RAFO4CHO_I_DAYN",
+    "from_username": "@faf_dayn",
+    "original_text": "уеуеуеуеу",
+    "new_text": "",
+    "happened_at": "2026-03-20 23:40:59 UTC"
+  }
+]

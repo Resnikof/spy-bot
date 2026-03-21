@@ -1,0 +1,22 @@
+[
+  {
+    "event_type": "edited",
+    "message_id": 1190788,
+    "from_id": 671225403,
+    "from_name": "️",
+    "from_username": "@xxOkkk",
+    "original_text": "писать уже наедоело",
+    "new_text": "писать уже надоело",
+    "happened_at": "2026-03-21 01:07:10 UTC"
+  },
+  {
+    "event_type": "edited",
+    "message_id": 1190797,
+    "from_id": 671225403,
+    "from_name": "️",
+    "from_username": "@xxOkkk",
+    "original_text": "а сидел в нн",
+    "new_text": "а сидел в нем",
+    "happened_at": "2026-03-21 01:07:54 UTC"
+  }
+]

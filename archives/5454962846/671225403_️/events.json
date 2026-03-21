@@ -1,0 +1,62 @@
+[
+  {
+    "event_type": "edited",
+    "message_id": 586136,
+    "from_id": 671225403,
+    "from_name": "️",
+    "from_username": "@xxOkkk",
+    "original_text": "и как туи",
+    "new_text": "и как тут",
+    "happened_at": "2026-03-20 23:29:01 UTC"
+  },
+  {
+    "event_type": "deleted",
+    "message_id": 586277,
+    "from_id": 5454962846,
+    "from_name": "muxa👹",
+    "from_username": "@muxa0x1",
+    "original_text": "Влада",
+    "new_text": "",
+    "happened_at": "2026-03-21 00:00:06 UTC"
+  },
+  {
+    "event_type": "edited",
+    "message_id": 586276,
+    "from_id": 5454962846,
+    "from_name": "muxa👹",
+    "from_username": "@muxa0x1",
+    "original_text": "Алалала",
+    "new_text": "Алалалавьвьв",
+    "happened_at": "2026-03-21 00:00:10 UTC"
+  },
+  {
+    "event_type": "edited",
+    "message_id": 586312,
+    "from_id": 671225403,
+    "from_name": "️",
+    "from_username": "@xxOkkk",
+    "original_text": "окн",
+    "new_text": "оке",
+    "happened_at": "2026-03-21 00:03:22 UTC"
+  },
+  {
+    "event_type": "deleted",
+    "message_id": 586323,
+    "from_id": 5454962846,
+    "from_name": "muxa👹",
+    "from_username": "@muxa0x1",
+    "original_text": "Ку-ку",
+    "new_text": "",
+    "happened_at": "2026-03-21 00:04:06 UTC"
+  },
+  {
+    "event_type": "deleted",
+    "message_id": 586334,
+    "from_id": 5454962846,
+    "from_name": "muxa👹",
+    "from_username": "@muxa0x1",
+    "original_text": "",
+    "new_text": "",
+    "happened_at": "2026-03-21 00:08:16 UTC"
+  }
+]

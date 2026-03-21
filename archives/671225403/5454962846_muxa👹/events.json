@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "edited",
+    "message_id": 1190662,
+    "from_id": 671225403,
+    "from_name": "️",
+    "from_username": "@xxOkkk",
+    "original_text": "окн",
+    "new_text": "оке",
+    "happened_at": "2026-03-21 00:03:23 UTC"
+  },
+  {
+    "event_type": "deleted",
+    "message_id": 1190669,
+    "from_id": 5454962846,
+    "from_name": "muxa👹",
+    "from_username": "@muxa0x1",
+    "original_text": "Ку-ку",
+    "new_text": "",
+    "happened_at": "2026-03-21 00:04:06 UTC"
+  },
+  {
+    "event_type": "deleted",
+    "message_id": 1190680,
+    "from_id": 5454962846,
+    "from_name": "muxa👹",
+    "from_username": "@muxa0x1",
+    "original_text": "",
+    "new_text": "",
+    "happened_at": "2026-03-21 00:08:16 UTC"
+  }
+]

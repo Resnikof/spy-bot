@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "deleted",
+    "message_id": 579182,
+    "from_id": 6256720385,
+    "from_name": "карина",
+    "from_username": "@idinaxyischegol",
+    "original_text": "Я украл свеалвл",
+    "new_text": "",
+    "happened_at": "2026-03-11 14:07:22 UTC"
+  },
+  {
+    "event_type": "deleted",
+    "message_id": 579184,
+    "from_id": 6256720385,
+    "from_name": "карина",
+    "from_username": "@idinaxyischegol",
+    "original_text": "Я тебе наебал , иба ты лох",
+    "new_text": "",
+    "happened_at": "2026-03-11 14:08:35 UTC"
+  },
+  {
+    "event_type": "edited",
+    "message_id": 579196,
+    "from_id": 6256720385,
+    "from_name": "карина",
+    "from_username": "@idinaxyischegol",
+    "original_text": "Я тебя наебал ты лох",
+    "new_text": "Я добри",
+    "happened_at": "2026-03-11 14:11:07 UTC"
+  }
+]

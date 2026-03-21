@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "edited",
+    "message_id": 579235,
+    "from_id": 848164636,
+    "from_name": "*",
+    "from_username": "@liskonyashko",
+    "original_text": "как пизда потом",
+    "new_text": "аку пизда потом",
+    "happened_at": "2026-03-11 14:25:46 UTC"
+  },
+  {
+    "event_type": "edited",
+    "message_id": 579263,
+    "from_id": 848164636,
+    "from_name": "*",
+    "from_username": "@liskonyashko",
+    "original_text": "и шо горит",
+    "new_text": "и шо норми",
+    "happened_at": "2026-03-11 14:27:41 UTC"
+  },
+  {
+    "event_type": "edited",
+    "message_id": 579263,
+    "from_id": 848164636,
+    "from_name": "*",
+    "from_username": "@liskonyashko",
+    "original_text": "и шо горит",
+    "new_text": "и шо норм",
+    "happened_at": "2026-03-11 14:27:47 UTC"
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "event_type": "deleted",
+    "message_id": 579112,
+    "from_id": 7873450952,
+    "from_name": "Олежка",
+    "from_username": "—",
+    "original_text": "Пенне",
+    "new_text": "",
+    "happened_at": "2026-03-11 13:19:05 UTC"
+  },
+  {
+    "event_type": "deleted",
+    "message_id": 585956,
+    "from_id": null,
+    "from_name": "?",
+    "from_username": "—",
+    "original_text": "_(не сохранено)_",
+    "new_text": "",
+    "happened_at": "2026-03-20 22:51:21 UTC"
+  },
+  {
+    "event_type": "deleted",
+    "message_id": 585965,
+    "from_id": null,
+    "from_name": "?",
+    "from_username": "—",
+    "original_text": "_(не сохранено)_",
+    "new_text": "",
+    "happened_at": "2026-03-20 22:53:16 UTC"
+  },
+  {
+    "event_type": "deleted",
+    "message_id": 585991,
+    "from_id": null,
+    "from_name": "?",
+    "from_username": "—",
+    "original_text": "_(не сохранено)_",
+    "new_text": "",
+    "happened_at": "2026-03-20 23:13:05 UTC"
+  },
+  {
+    "event_type": "edited",
+    "message_id": 585980,
+    "from_id": 7873450952,
+    "from_name": "Олежка",
+    "from_username": "—",
+    "original_text": "_(до запуска бота)_",
+    "new_text": "Саааааааммс",
+    "happened_at": "2026-03-20 23:13:13 UTC"
+  },
+  {
+    "event_type": "deleted",
+    "message_id": 586078,
+    "from_id": 7873450952,
+    "from_name": "Олежка",
+    "from_username": "—",
+    "original_text": "Пппп",
+    "new_text": "",
+    "happened_at": "2026-03-20 23:19:25 UTC"
+  },
+  {
+    "event_type": "edited",
+    "message_id": 586077,
+    "from_id": 7873450952,
+    "from_name": "Олежка",
+    "from_username": "—",
+    "original_text": "Аааа",
+    "new_text": "Аааааааа",
+    "happened_at": "2026-03-20 23:19:31 UTC"
+  },
+  {
+    "event_type": "deleted",
+    "message_id": 586313,
+    "from_id": 7873450952,
+    "from_name": "Олежка",
+    "from_username": "—",
+    "original_text": "Ставь",
+    "new_text": "",
+    "happened_at": "2026-03-21 00:03:39 UTC"
+  }
+]
