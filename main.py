@@ -30,22 +30,11 @@ from telegram.ext import (
 #  CONFIG
 # ══════════════════════════════════════════════════════
 
-import os
-BOT_TOKEN  = os.getenv("BOT_TOKEN", "8338451046:AAEag_MZkmp_K3b7iobqWU5iyqCMkMsh4jM")
-DB_FILE    = "archive.db"
+from config import (
+    BOT_TOKEN, ADMIN_IDS, ADMIN_PROMO_KEY,
+    SERVER_URL, DB_FILE, PROMOS
+)
 ARCHIVE_DIR = Path("archives")
-
-ADMIN_IDS: list[int] = [5454962846]  # ← твой ID
-
-ADMIN_PROMO_KEY = "ADMIN_SECRET_2025"
-
-PROMOS: dict[str, int] = {
-    "FREE30": 30,
-    "TRIAL7": 7,
-    "VIP90":  90,
-    "TEST1":  1,
-}
-
 logging.basicConfig(format="%(asctime)s [%(levelname)s] %(name)s — %(message)s", level=logging.INFO)
 logger = logging.getLogger("LegalBot")
 
@@ -493,6 +482,8 @@ def kb_main(uid: int) -> InlineKeyboardMarkup:
          InlineKeyboardButton("⚠️ События",       callback_data="menu:events")],
         [InlineKeyboardButton("🔑 Промокод",      callback_data="menu:promo"),
          InlineKeyboardButton("👤 Мой профиль",   callback_data="menu:profile")],
+        [InlineKeyboardButton("🌐 Веб-панель",
+                              web_app=WebAppInfo(url=f"{SERVER_URL}/?uid={uid}"))],
     ]
     if is_admin(uid):
         rows.append([InlineKeyboardButton("🛡 Админ-панель", callback_data="admin:panel")])
