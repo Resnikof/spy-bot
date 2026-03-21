@@ -1,0 +1,6 @@
+venv/
+archives/
+archive.db
+.env
+__pycache__/
+*.pyc
