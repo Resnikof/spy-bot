@@ -30,7 +30,8 @@ from telegram.ext import (
 #  CONFIG
 # ══════════════════════════════════════════════════════
 
-BOT_TOKEN  = "8338451046:AAEag_MZkmp_K3b7iobqWU5iyqCMkMsh4jM"
+import os
+BOT_TOKEN  = os.getenv("BOT_TOKEN", "8338451046:AAEag_MZkmp_K3b7iobqWU5iyqCMkMsh4jM")
 DB_FILE    = "archive.db"
 ARCHIVE_DIR = Path("archives")
 
@@ -417,9 +418,9 @@ async def db_use_promo(uid, code) -> tuple[bool, str]:
     await db_give_sub(uid, promo["days"])
     return True, f"✅ Промокод активирован! +{promo['days']} дней подписки."
 
-async def db_add_promo(code, days, max_uses=-1):
+async def db_add_promo(code, days):
     async with aiosqlite.connect(DB_FILE) as db:
-        await db.execute("INSERT OR REPLACE INTO promos VALUES (?,?,?,0,?)", (code, days, max_uses, ts()))
+        await db.execute("INSERT OR REPLACE INTO promos VALUES (?,?,0,?)", (code, days, ts()))
         await db.commit()
 
 async def db_del_promo(code):
