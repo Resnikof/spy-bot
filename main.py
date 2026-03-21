@@ -18,7 +18,7 @@ from pathlib import Path
 from telegram import (
     Update, Message,
     InlineKeyboardButton, InlineKeyboardMarkup,
-    BotCommand,
+    BotCommand, WebAppInfo,
 )
 from telegram.ext import (
     Application, CommandHandler, MessageHandler,
