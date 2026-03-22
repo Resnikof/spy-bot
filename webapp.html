@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Archive Panel</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --bg:      #0f0f1a;
+  --bg2:     #1a1a2e;
+  --bg3:     #16213e;
+  --accent:  #6c63ff;
+  --accent2: #a29bfe;
+  --text:    #e8e8f0;
+  --text2:   #9494b0;
+  --green:   #00d2a0;
+  --red:     #ff6b6b;
+  --yellow:  #ffd93d;
+  --border:  rgba(255,255,255,0.07);
+  --card:    rgba(255,255,255,0.05);
+  --radius:  14px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Шапка ── */
+.header {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+}
+.header-row { display: flex; align-items: center; justify-content: space-between; }
+.header-title { font-size: 17px; font-weight: 700; color: var(--text); }
+.header-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+.badge {
+  font-size: 11px; padding: 3px 9px; border-radius: 20px;
+  font-weight: 600;
+}
+.badge-green  { background: rgba(0,210,160,0.15); color: var(--green); }
+.badge-red    { background: rgba(255,107,107,0.15); color: var(--red); }
+.badge-purple { background: rgba(108,99,255,0.2); color: var(--accent2); }
+
+/* ── Статс-карточки ── */
+.stats-row {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 8px; padding: 12px 16px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 8px; text-align: center;
+}
+.stat-num { font-size: 22px; font-weight: 800; }
+.stat-label { font-size: 10px; color: var(--text2); margin-top: 2px; }
+
+/* ── Кнопки вкладок ── */
+.tabs {
+  display: flex; gap: 8px; padding: 0 16px 12px;
+}
+.tab-btn {
+  flex: 1; padding: 10px 6px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text2); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all .2s;
+}
+.tab-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ── Контент ── */
+.content { padding: 0 16px 80px; }
+
+/* ── Чат-карточка ── */
+.chat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background .15s;
+  display: flex; align-items: center; gap: 12px;
+}
+.chat-card:active { background: rgba(255,255,255,0.1); }
+.chat-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.chat-info { flex: 1; min-width: 0; }
+.chat-name { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat-last { font-size: 12px; color: var(--text2); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat-meta { text-align: right; flex-shrink: 0; }
+.chat-count { font-size: 11px; color: var(--text2); }
+.chat-warn { font-size: 11px; color: var(--red); margin-top: 2px; }
+
+/* ── Пользователь-карточка ── */
+.user-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background .15s;
+  display: flex; align-items: center; gap: 12px;
+}
+.user-card:active { background: rgba(255,255,255,0.1); }
+.user-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: linear-gradient(135deg, #6c63ff, #a29bfe);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.user-info { flex: 1; min-width: 0; }
+.user-name { font-size: 15px; font-weight: 600; }
+.user-sub  { font-size: 12px; margin-top: 3px; }
+
+/* ── Переписка ── */
+.msg-list { display: flex; flex-direction: column; gap: 6px; }
+
+.msg-bubble {
+  max-width: 85%;
+  padding: 10px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  position: relative;
+}
+.msg-bubble.out {
+  background: linear-gradient(135deg, #6c63ff, #a29bfe);
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+.msg-bubble.in {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+.msg-bubble.deleted { opacity: 0.5; text-decoration: line-through; }
+.msg-bubble.edited::after {
+  content: " ✏️";
+  font-size: 11px;
+  opacity: 0.7;
+}
+.msg-sender { font-size: 11px; font-weight: 600; color: var(--accent2); margin-bottom: 4px; }
+.msg-time { font-size: 10px; opacity: 0.6; margin-top: 4px; text-align: right; }
+.msg-media {
+  margin-top: 6px; border-radius: 10px; overflow: hidden;
+  max-width: 240px;
+}
+.msg-media img { width: 100%; display: block; border-radius: 10px; }
+.msg-media video { width: 100%; display: block; border-radius: 10px; }
+.msg-media audio { width: 100%; margin-top: 4px; }
+.msg-media-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.1);
+  padding: 6px 10px; border-radius: 8px;
+  font-size: 12px; margin-top: 4px;
+}
+
+/* ── Навигация ── */
+.back-btn {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--accent2); font-size: 15px;
+  background: none; border: none; cursor: pointer;
+  padding: 12px 0; font-weight: 600;
+}
+
+/* ── Профиль ── */
+.profile-card {
+  background: linear-gradient(135deg, var(--bg2), var(--bg3));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px; margin-bottom: 16px;
+}
+.profile-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.profile-label { font-size: 13px; color: var(--text2); }
+.profile-value { font-size: 13px; font-weight: 600; }
+
+/* ── Spinner ── */
+.spinner {
+  width: 36px; height: 36px; margin: 40px auto;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.empty { text-align: center; color: var(--text2); padding: 40px 20px; font-size: 14px; }
+
+/* ── Разделитель даты ── */
+.date-divider {
+  text-align: center; font-size: 11px; color: var(--text2);
+  margin: 12px 0; position: relative;
+}
+.date-divider::before, .date-divider::after {
+  content: ""; position: absolute; top: 50%;
+  width: 35%; height: 1px; background: var(--border);
+}
+.date-divider::before { left: 0; }
+.date-divider::after  { right: 0; }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+const tg = window.Telegram?.WebApp;
+if (tg) { tg.ready(); tg.expand(); }
+
+// ── Конфиг ──
+const SERVER = "http://95.179.227.4:8080";
+const uid    = parseInt(new URLSearchParams(location.search).get("uid") || tg?.initDataUnsafe?.user?.id || 0);
+
+// ── Стейт ──
+let state = {
+  view:      "loading",  // loading | main | chats | chat | users | user | userchats
+  user:      null,
+  stats:     null,
+  chats:     [],
+  messages:  [],
+  users:     [],
+  userChats: [],
+  curChat:   null,
+  curUser:   null,
+  adminTab:  "chats",    // chats | users
+};
+
+// ── API ──
+async function api(path) {
+  const r = await fetch(SERVER + path);
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+// ── Рендер ──
+function render() {
+  const app = document.getElementById("app");
+  switch (state.view) {
+    case "loading":   app.innerHTML = renderLoading(); break;
+    case "main":      app.innerHTML = renderMain(); break;
+    case "chats":     app.innerHTML = renderChats(); break;
+    case "chat":      app.innerHTML = renderChat(); break;
+    case "users":     app.innerHTML = renderUsers(); break;
+    case "user":      app.innerHTML = renderUser(); break;
+    case "userchats": app.innerHTML = renderUserChats(); break;
+  }
+}
+
+function renderLoading() {
+  return `<div class="spinner"></div>`;
+}
+
+// ── Главная ──
+function renderMain() {
+  const u = state.user;
+  const isAdmin = u.is_admin;
+  const subBadge = u.has_sub
+    ? `<span class="badge badge-green">✅ ${u.sub_until}</span>`
+    : `<span class="badge badge-red">❌ Нет подписки</span>`;
+  const adminBadge = isAdmin ? `<span class="badge badge-purple">🛡 Админ</span>` : "";
+
+  let statsHtml = "";
+  if (isAdmin && state.stats) {
+    const s = state.stats;
+    statsHtml = `
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-num" style="color:var(--text)">${s.total}</div>
+          <div class="stat-label">Всего</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" style="color:var(--green)">${s.active}</div>
+          <div class="stat-label">С подпиской</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" style="color:var(--red)">${s.never + s.expired}</div>
+          <div class="stat-label">Без подписки</div>
+        </div>
+      </div>
+    `;
+  }
+
+  let tabsHtml = "";
+  if (isAdmin) {
+    tabsHtml = `
+      <div class="tabs">
+        <button class="tab-btn ${state.adminTab === 'chats' ? 'active' : ''}" onclick="switchAdminTab('chats')">💬 Мои чаты</button>
+        <button class="tab-btn ${state.adminTab === 'users' ? 'active' : ''}" onclick="switchAdminTab('users')">👥 Пользователи</button>
+      </div>
+    `;
+  }
+
+  let contentHtml = "";
+  if (!isAdmin || state.adminTab === "chats") {
+    contentHtml = renderChatList(state.chats, uid);
+  } else {
+    contentHtml = renderUserList(state.users);
+  }
+
+  return `
+    <div class="header">
+      <div class="header-row">
+        <div>
+          <div class="header-title">${u.full_name || u.username || "Пользователь"} ${adminBadge}</div>
+          <div class="header-sub">🆔 ${u.user_id}</div>
+        </div>
+        ${subBadge}
+      </div>
+    </div>
+    ${statsHtml}
+    ${tabsHtml}
+    <div class="content">
+      ${contentHtml}
+    </div>
+  `;
+}
+
+function renderChatList(chats, targetUid) {
+  if (!chats.length) return `<div class="empty">💬 Чатов пока нет</div>`;
+  return chats.map(c => {
+    const last = c.last_msg ? (c.last_msg.text || c.last_msg.media || "") : "—";
+    const warn = c.events_count > 0 ? `<div class="chat-warn">⚠️ ${c.events_count} событий</div>` : "";
+    const mediaIcon = c.media_count > 0 ? ` 🖼${c.media_count}` : "";
+    return `
+      <div class="chat-card" onclick="openChat('${c.chat_id}', ${targetUid})">
+        <div class="chat-avatar">${(c.chat_name[0] || "?").toUpperCase()}</div>
+        <div class="chat-info">
+          <div class="chat-name">${esc(c.chat_name)}</div>
+          <div class="chat-last">${esc(last.slice(0, 60))}</div>
+        </div>
+        <div class="chat-meta">
+          <div class="chat-count">${c.msg_count} сообщ.${mediaIcon}</div>
+          ${warn}
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderUserList(users) {
+  if (!users.length) return `<div class="empty">👥 Пользователей нет</div>`;
+  return users.map(u => {
+    const icon = u.has_sub ? "🟢" : "🔴";
+    const name = u.full_name || u.username || String(u.user_id);
+    return `
+      <div class="user-card" onclick="openUser(${u.user_id})">
+        <div class="user-avatar">${(name[0] || "?").toUpperCase()}</div>
+        <div class="user-info">
+          <div class="user-name">${icon} ${esc(name)}</div>
+          <div class="user-sub" style="color:var(--text2)">@${esc(u.username || "—")} · 🆔 ${u.user_id}</div>
+        </div>
+        <div style="font-size:12px;color:var(--text2)">${u.chat_count} чатов</div>
+      </div>
+    `;
+  }).join("");
+}
+
+// ── Чаты (отдельный экран) ──
+function renderChats() {
+  return `
+    <div class="header">
+      <button class="back-btn" onclick="goBack()">← Назад</button>
+      <div class="header-title">💬 Мои чаты</div>
+    </div>
+    <div class="content" style="padding-top:12px">
+      ${renderChatList(state.chats, uid)}
+    </div>
+  `;
+}
+
+// ── Переписка ──
+function renderChat() {
+  const msgs = state.messages;
+  const chat = state.curChat;
+  if (!msgs.length) return `
+    <div class="header">
+      <button class="back-btn" onclick="goBack()">← Назад</button>
+      <div class="header-title">${esc(chat?.chat_name || "Чат")}</div>
+    </div>
+    <div class="empty">Сообщений нет</div>
+  `;
+
+  let lastDate = "";
+  const bubbles = msgs.map(m => {
+    const isOut = String(m.from_id) === String(state.curChat?.viewerUid || uid);
+    const cls   = isOut ? "out" : "in";
+    const deleted = m.deleted ? " deleted" : "";
+    const edited  = m.edited  ? " edited"  : "";
+
+    // Дата
+    const msgDate = m.sent_at ? m.sent_at.split(" ")[0] : "";
+    let dateDivider = "";
+    if (msgDate && msgDate !== lastDate) {
+      lastDate = msgDate;
+      dateDivider = `<div class="date-divider">${msgDate}</div>`;
+    }
+
+    // Медиа
+    let mediaHtml = "";
+    if (m.media_path) {
+      const fname = m.media_path.split("/").pop();
+      const folder = m.media_path.split("/").slice(-2)[0];
+      const ownerFolder = m.media_path.split("/")[1];
+      const mediaUrl = `${SERVER}/media/${ownerFolder}/${folder}/${fname}`;
+
+      if (m.media === "📷 фото") {
+        mediaHtml = `<div class="msg-media"><img src="${mediaUrl}" loading="lazy" onclick="window.open('${mediaUrl}')"/></div>`;
+      } else if (m.media === "🎥 видео" || m.media === "📹 кружочек") {
+        mediaHtml = `<div class="msg-media"><video src="${mediaUrl}" controls></video></div>`;
+      } else if (m.media === "🎙 голосовое") {
+        mediaHtml = `<div class="msg-media"><audio src="${mediaUrl}" controls></audio></div>`;
+      } else if (m.media) {
+        mediaHtml = `<div class="msg-media-label">${m.media} <a href="${mediaUrl}" target="_blank" style="color:var(--accent2)">Скачать</a></div>`;
+      }
+    } else if (m.media && !m.media_path) {
+      mediaHtml = `<div class="msg-media-label">${m.media}</div>`;
+    }
+
+    const time = m.sent_at ? m.sent_at.slice(11, 16) : "";
+    const senderLine = !isOut ? `<div class="msg-sender">${esc(m.from_name || "?")} ${esc(m.from_username || "")}</div>` : "";
+
+    return `
+      ${dateDivider}
+      <div style="display:flex;flex-direction:column;align-items:${isOut ? 'flex-end' : 'flex-start'}">
+        <div class="msg-bubble ${cls}${deleted}${edited}">
+          ${senderLine}
+          ${m.text ? esc(m.text) : ""}
+          ${mediaHtml}
+          <div class="msg-time">${time}</div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  return `
+    <div class="header">
+      <button class="back-btn" onclick="goBack()">← Назад</button>
+      <div class="header-title">${esc(chat?.chat_name || "Чат")}</div>
+      <div class="header-sub">${msgs.length} сообщений</div>
+    </div>
+    <div class="content msg-list" style="padding-top:12px">
+      ${bubbles}
+    </div>
+  `;
+}
+
+// ── Пользователь (карточка) ──
+function renderUser() {
+  const u = state.curUser;
+  if (!u) return "";
+  const subColor = u.has_sub ? "var(--green)" : "var(--red)";
+  return `
+    <div class="header">
+      <button class="back-btn" onclick="goBack()">← К списку</button>
+      <div class="header-title">👤 ${esc(u.full_name || u.username || String(u.user_id))}</div>
+    </div>
+    <div class="content" style="padding-top:12px">
+      <div class="profile-card">
+        <div class="profile-row"><span class="profile-label">🆔 ID</span><span class="profile-value">${u.user_id}</span></div>
+        <div class="profile-row"><span class="profile-label">📛 Ник</span><span class="profile-value">@${esc(u.username || "—")}</span></div>
+        <div class="profile-row"><span class="profile-label">📅 В боте с</span><span class="profile-value">${u.registered_at || "—"}</span></div>
+        <div class="profile-row"><span class="profile-label">🔔 Подписка</span><span class="profile-value" style="color:${subColor}">${u.has_sub ? "Активна" : "Нет"}</span></div>
+        <div class="profile-row"><span class="profile-label">💬 Чатов</span><span class="profile-value">${u.chat_count}</span></div>
+      </div>
+      <button class="tab-btn active" style="width:100%;margin-bottom:8px" onclick="openUserChats(${u.user_id})">
+        💬 Просмотреть чаты
+      </button>
+    </div>
+  `;
+}
+
+// ── Чаты пользователя (для админа) ──
+function renderUserChats() {
+  const u = state.curUser;
+  return `
+    <div class="header">
+      <button class="back-btn" onclick="goBack()">← К пользователю</button>
+      <div class="header-title">💬 Чаты ${esc(u?.full_name || u?.username || "")}</div>
+    </div>
+    <div class="content" style="padding-top:12px">
+      ${renderChatList(state.userChats, state.curUser?.user_id)}
+    </div>
+  `;
+}
+
+// ── Список пользователей ──
+function renderUsers() {
+  return `
+    <div class="header">
+      <button class="back-btn" onclick="goBack()">← Назад</button>
+      <div class="header-title">👥 Пользователи</div>
+    </div>
+    <div class="content" style="padding-top:12px">
+      ${renderUserList(state.users)}
+    </div>
+  `;
+}
+
+// ══════════════════════════════════════════════════════
+//  ДЕЙСТВИЯ
+// ══════════════════════════════════════════════════════
+
+const history = [];
+
+function goBack() {
+  if (history.length > 0) {
+    const prev = history.pop();
+    Object.assign(state, prev);
+    render();
+  }
+}
+
+function pushState(patch) {
+  history.push({
+    view:      state.view,
+    curChat:   state.curChat,
+    curUser:   state.curUser,
+    adminTab:  state.adminTab,
+    messages:  state.messages,
+    userChats: state.userChats,
+  });
+  Object.assign(state, patch);
+  render();
+}
+
+async function openChat(chatId, targetUid) {
+  pushState({ view: "loading" });
+  render();
+  try {
+    const msgs = await api(`/api/messages?uid=${targetUid}&chat_id=${chatId}&viewer=${uid}`);
+    const chatInfo = (targetUid === uid ? state.chats : state.userChats)
+      .find(c => c.chat_id === String(chatId));
+    pushState({
+      view:     "chat",
+      messages: msgs,
+      curChat:  { ...chatInfo, viewerUid: uid },
+    });
+  } catch(e) {
+    alert("Ошибка загрузки чата");
+    goBack();
+  }
+}
+
+async function openUser(userId) {
+  pushState({ view: "loading" });
+  render();
+  try {
+    const users = state.users;
+    const u = users.find(x => x.user_id === userId);
+    pushState({ view: "user", curUser: u });
+  } catch(e) {
+    goBack();
+  }
+}
+
+async function openUserChats(userId) {
+  pushState({ view: "loading" });
+  render();
+  try {
+    const chats = await api(`/api/chats?uid=${userId}`);
+    pushState({ view: "userchats", userChats: chats });
+  } catch(e) {
+    alert("Ошибка");
+    goBack();
+  }
+}
+
+function switchAdminTab(tab) {
+  state.adminTab = tab;
+  render();
+}
+
+// ── Утилиты ──
+function esc(s) {
+  return String(s || "")
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+// ══════════════════════════════════════════════════════
+//  ИНИЦИАЛИЗАЦИЯ
+// ══════════════════════════════════════════════════════
+
+async function init() {
+  if (!uid) {
+    document.getElementById("app").innerHTML =
+      `<div class="empty">❌ UID не передан.<br>Открывай через бота.</div>`;
+    return;
+  }
+  render(); // показать spinner
+
+  try {
+    const [me, chats] = await Promise.all([
+      api(`/api/me?uid=${uid}`),
+      api(`/api/chats?uid=${uid}`),
+    ]);
+    state.user  = me;
+    state.chats = chats;
+
+    if (me.is_admin) {
+      const [stats, users] = await Promise.all([
+        api(`/api/stats?viewer=${uid}`),
+        api(`/api/users?viewer=${uid}`),
+      ]);
+      state.stats = stats;
+      state.users = users;
+    }
+
+    state.view = "main";
+    render();
+  } catch(e) {
+    document.getElementById("app").innerHTML =
+      `<div class="empty">❌ Ошибка подключения к серверу.<br>${e.message}</div>`;
+  }
+}
+
+init();
+</script>
+</body>
+</html>
